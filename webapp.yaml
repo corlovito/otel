@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-web-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-service
+  template:
+    metadata:
+      labels:
+        app: example-web-service
+    spec:
+      containers:
+        - name: example-web-service
+          image: corlovito/example-web-service
+          ports:
+            - containerPort: 8080
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: "simplest-agent.default.svc.cluster.local"
+            - name: JAEGER_AGENT_PORT
+              value: "6831"

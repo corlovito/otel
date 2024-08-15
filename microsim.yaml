@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microsim
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microsim
+  template:
+    metadata:
+      labels:
+        app: microsim
+    spec:
+      containers:
+        - name: microsim
+          image: yurishkuro/microsim:v0.4.1
+          args: ["-d", "24h", "-s", "500ms"]
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector:4318"
+            - name: OTEL_EXPORTER_OTLP_INSECURE
+              value: "true"
